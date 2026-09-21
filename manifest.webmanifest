@@ -1,0 +1,9 @@
+{
+  "name": "ValideM Price Integrity Sentinel",
+  "short_name": "ValideM",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#050907",
+  "theme_color": "#07110f",
+  "icons": []
+}
