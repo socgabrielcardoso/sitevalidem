@@ -48,3 +48,9 @@ test("negative quantities retain the offending nested field", () => {
   assert.equal(finding.path, "order.quantidade");
   assert.equal(finding.observed, -1);
 });
+
+test("fractional quantities cannot receive the safe contract finding", () => {
+  const result = analyzePayload({ id: 410, qty: 1.5 });
+  assert.ok(result.findings.some(item => item.ruleId === "VM004"));
+  assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
+});
