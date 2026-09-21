@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ValideM identifica sinais de manipulação de preço e confiança indevida em dados enviados pelo cliente.">
+  <meta name="theme-color" content="#07110f">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <title>ValideM | Price Integrity Sentinel</title>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">VM</span>
+      <div><strong>ValideM</strong><span>Price Integrity Sentinel</span></div>
+    </div>
+    <div class="topbar-status"><span class="status-dot" aria-hidden="true"></span><span>Processamento local</span></div>
+  </header>
+  <main class="shell">
+    <section class="hero panel">
+      <div>
+        <p class="eyebrow">Business Logic Defense</p>
+        <h1>Detecte quando o cliente tenta decidir o preço que o servidor deveria calcular.</h1>
+        <p class="hero-copy">Cole uma requisição JSON, carregue um HAR ou rode os cenários de laboratório. O motor identifica campos monetários controlados pelo cliente, divergências com o catálogo e estados de pagamento que jamais deveriam ser aceitos sem verificação no backend.</p>
+      </div>
+      <div class="hero-score" aria-label="Resumo do último diagnóstico">
+        <span>Risco atual</span><strong id="riskScore">0</strong><small id="riskLabel">Aguardando análise</small>
+      </div>
+    </section>
+
+    <section class="grid two-columns">
+      <article class="panel workspace">
+        <div class="panel-head">
+          <div><p class="eyebrow">Entrada</p><h2>Requisição observada</h2></div>
+          <div class="actions compact">
+            <button id="presetSafe" class="button ghost" type="button">Seguro</button>
+            <button id="presetTampered" class="button ghost" type="button">Manipulado</button>
+            <button id="presetPayment" class="button ghost" type="button">Pagamento</button>
+          </div>
+        </div>
+        <label class="field-label" for="requestInput">JSON</label>
+        <textarea id="requestInput" spellcheck="false" autocomplete="off" aria-describedby="requestHelp"></textarea>
+        <div id="requestHelp" class="field-help">A análise ocorre automaticamente após a digitação. Nenhum dado é enviado para fora do navegador.</div>
+        <div class="actions">
+          <button id="analyzeButton" class="button primary" type="button">Analisar agora</button>
+          <label class="button secondary file-button" for="harInput">Abrir HAR</label>
+          <input id="harInput" class="visually-hidden" type="file" accept=".har,application/json">
+          <button id="downloadButton" class="button ghost" type="button">Exportar evidências</button>
+        </div>
+      </article>
+
+      <aside class="panel catalog-panel">
+        <div class="panel-head">
+          <div><p class="eyebrow">Fonte confiável</p><h2>Catálogo do servidor</h2></div><span class="chip">Demo</span>
+        </div>
+        <p class="muted">Os valores abaixo são sintéticos. O ID 219 foi usado apenas para reproduzir o padrão visível no vídeo, sem afirmar o preço real de qualquer serviço.</p>
+        <div id="catalogList" class="catalog-list"></div>
+        <div class="server-rule"><strong>Regra central</strong><p>O cliente envia identificador e quantidade. O backend busca preço, desconto permitido, taxa e total em fontes confiáveis.</p></div>
+      </aside>
+    </section>
+
+    <section class="grid result-grid">
+      <article class="panel verdict-card">
+        <div class="panel-head">
+          <div><p class="eyebrow">Veredito técnico</p><h2 id="verdictTitle">Sem análise</h2></div>
+          <span id="verdictBadge" class="badge neutral">Idle</span>
+        </div>
+        <p id="verdictSummary" class="muted">Use um preset ou cole uma requisição.</p>
+        <div class="metrics">
+          <div><span>Achados</span><strong id="findingCount">0</strong></div>
+          <div><span>Críticos</span><strong id="criticalCount">0</strong></div>
+          <div><span>Confiança</span><strong id="confidenceValue">0%</strong></div>
+        </div>
+      </article>
+      <article class="panel">
+        <div class="panel-head"><div><p class="eyebrow">Comparação</p><h2>Backend vulnerável vs protegido</h2></div></div>
+        <div id="simulationResult" class="simulation-grid"></div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div><p class="eyebrow">Detecções</p><h2>Evidências encontradas</h2></div>
+        <div class="filter-row" role="group" aria-label="Filtro de severidade">
+          <button class="filter active" data-filter="all" type="button">Todas</button>
+          <button class="filter" data-filter="critical" type="button">Críticas</button>
+          <button class="filter" data-filter="high" type="button">Altas</button>
+          <button class="filter" data-filter="medium" type="button">Médias</button>
+        </div>
+      </div>
+      <div id="findings" class="findings" aria-live="polite"></div>
+    </section>
+
+    <section class="grid two-columns">
+      <article class="panel">
+        <div class="panel-head"><div><p class="eyebrow">Fluxo correto</p><h2>Arquitetura de pagamento</h2></div></div>
+        <ol class="flow-list">
+          <li><span>1</span><div><strong>Cliente escolhe</strong><p>Envia somente identificador, quantidade e dados estritamente necessários.</p></div></li>
+          <li><span>2</span><div><strong>API valida o contrato</strong><p>Rejeita campos inesperados e tipos inválidos.</p></div></li>
+          <li><span>3</span><div><strong>Servidor recalcula</strong><p>Busca preço e regras comerciais no catálogo confiável.</p></div></li>
+          <li><span>4</span><div><strong>Servidor cria a cobrança</strong><p>Gera a transação com o valor recalculado.</p></div></li>
+          <li><span>5</span><div><strong>Confirmação é reconciliada</strong><p>Webhook autenticado e consulta server to server confirmam valor, pedido e status.</p></div></li>
+        </ol>
+      </article>
+      <article class="panel">
+        <div class="panel-head"><div><p class="eyebrow">HAR Scanner</p><h2>Última varredura</h2></div></div>
+        <div id="harSummary" class="har-summary empty">Nenhum arquivo HAR analisado.</div>
+        <p class="muted footnote">A varredura de HAR é heurística. Ela encontra sinais de risco em requisições, mas não prova que um backend aceita a adulteração sem um teste autorizado do lado servidor.</p>
+      </article>
+    </section>
+  </main>
+  <footer class="footer"><span>ValideM</span><span>Defensive AppSec Lab</span><span>CWE 602 | OWASP Business Logic</span></footer>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
