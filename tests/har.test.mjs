@@ -64,3 +64,12 @@ test("invalid HAR envelopes fail explicitly instead of returning a clean report"
     assert.throws(() => scanHar(har), /Formato HAR inválido/);
   }
 });
+
+test("empty entries and requests without payloads are counted without findings", () => {
+  const result = scanHar({ log: { entries: [{}, null, {
+    request: { method: "GET", url: "https://example.test/" }
+  }] } });
+  assert.equal(result.totalEntries, 3);
+  assert.equal(result.suspiciousRequests, 0);
+  assert.deepEqual(result.requests, []);
+});
