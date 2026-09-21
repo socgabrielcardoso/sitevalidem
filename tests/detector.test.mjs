@@ -11,3 +11,11 @@ test("nested tampering keeps the field path and authoritative price", () => {
   assert.equal(mismatch.expected, 79.9);
   assert.equal(mismatch.severity, "critical");
 });
+
+test("zero and sub-ten-cent amounts are flagged at the boundary", () => {
+  for (const [valor, expected] of [[0, true], [0.099, true], [0.1, false]]) {
+    const result = analyzePayload({ id: 219, quantity: 1, valor });
+    assert.equal(result.findings.some(item => item.ruleId === "VM007"), expected, `valor=${valor}`);
+    assert.ok(result.findings.some(item => item.ruleId === "VM002"));
+  }
+});
