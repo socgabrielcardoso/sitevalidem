@@ -130,3 +130,11 @@ test("non-price monetary fields remain untrusted checkout inputs", () => {
     ["discount", "shipping", "tax"]);
   assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
 });
+
+test("analysis does not mutate frozen source evidence", () => {
+  const input = Object.freeze({ order: Object.freeze({ id: 219, quantity: 1, valor: 0.05 }) });
+  const before = structuredClone(input);
+  const result = analyzePayload(input);
+  assert.ok(result.findings.some(item => item.ruleId === "VM002"));
+  assert.deepEqual(input, before);
+});
