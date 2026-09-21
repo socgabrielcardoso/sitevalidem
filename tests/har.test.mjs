@@ -28,3 +28,12 @@ test("HAR query parameters expose price tampering", () => {
   assert.equal(result.requests[0].location, "query");
   assert.ok(result.requests[0].analysis.findings.some(item => item.ruleId === "VM002"));
 });
+
+test("HAR form parameters retain client-controlled payment state", () => {
+  const result = scanRequest({ postData: { params: [
+    { name: "id", value: "219" }, { name: "paymentStatus", value: "paid" }
+  ] } });
+  assert.equal(result.suspiciousRequests, 1);
+  assert.equal(result.requests[0].location, "body");
+  assert.equal(result.requests[0].analysis.findings.find(item => item.ruleId === "VM003").observed, "paid");
+});
