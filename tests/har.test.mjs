@@ -37,3 +37,12 @@ test("HAR form parameters retain client-controlled payment state", () => {
   assert.equal(result.requests[0].location, "body");
   assert.equal(result.requests[0].analysis.findings.find(item => item.ruleId === "VM003").observed, "paid");
 });
+
+test("URL-encoded body values are decoded before price analysis", () => {
+  const result = scanRequest({ postData: {
+    mimeType: "application/x-www-form-urlencoded", text: "id=219&quantity=1&valor=0%2C05"
+  } });
+  assert.equal(result.suspiciousRequests, 1);
+  assert.equal(result.requests[0].payload.valor, "0,05");
+  assert.ok(result.requests[0].analysis.findings.some(item => item.ruleId === "VM002"));
+});
