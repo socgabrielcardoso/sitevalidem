@@ -1,0 +1,32 @@
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  border-bottom: 1px solid rgba(47, 91, 73, .45);
+  background: rgba(5, 9, 7, .82);
+  backdrop-filter: blur(18px);
+}
+.brand { display: flex; align-items: center; gap: .75rem; }
+.brand-mark { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--accent-soft); color: var(--accent); font-family: var(--font-mono); font-weight: 800; }
+.brand div { display: grid; gap: .05rem; }
+.brand div span { color: var(--muted); font-size: .75rem; }
+.topbar-status { display: flex; align-items: center; gap: .5rem; color: var(--muted); font-size: .83rem; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+.shell { width: min(1440px, calc(100% - 2rem)); margin: 1rem auto 3rem; display: grid; gap: 1rem; }
+.panel { border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, rgba(13, 25, 21, .96), rgba(7, 15, 12, .96)); box-shadow: var(--shadow); }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 2rem; align-items: end; padding: clamp(1.3rem, 4vw, 3.8rem); overflow: hidden; }
+.hero-copy { max-width: 70rem; color: var(--muted); font-size: 1.02rem; }
+.hero-score { min-height: 190px; display: grid; align-content: center; justify-items: center; border: 1px solid var(--line-strong); border-radius: 50%; background: radial-gradient(circle, var(--accent-soft), transparent 68%); }
+.hero-score span, .hero-score small { color: var(--muted); }
+.hero-score strong { font-family: var(--font-mono); font-size: 4.7rem; line-height: 1; letter-spacing: -.09em; }
+.grid { display: grid; gap: 1rem; }
+.two-columns { grid-template-columns: minmax(0, 1.45fr) minmax(320px, .75fr); }
+.result-grid { grid-template-columns: minmax(300px, .65fr) minmax(0, 1.35fr); }
+.workspace, .catalog-panel, .verdict-card, .grid > .panel, section.panel { padding: 1.25rem; }
+.panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.footer { width: min(1440px, calc(100% - 2rem)); margin: 0 auto 2rem; display: flex; justify-content: space-between; gap: 1rem; color: #5f776c; font-size: .78rem; }
