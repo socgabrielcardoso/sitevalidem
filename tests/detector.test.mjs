@@ -81,3 +81,11 @@ test("an unknown identifier is recorded as an unknown catalog item", () => {
   assert.equal(result.catalogItem, null);
   assert.ok(result.findings.every(item => !["VM006", "VM100"].includes(item.ruleId)));
 });
+
+test("missing and empty identifiers cannot appear as safe contracts", () => {
+  for (const payload of [{ quantity: 1 }, { id: "", quantity: 1 }]) {
+    const result = analyzePayload(payload);
+    assert.ok(result.findings.some(item => item.ruleId === "VM006"));
+    assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
+  }
+});
