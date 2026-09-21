@@ -66,3 +66,11 @@ test("one above the quantity limit is flagged", () => {
   assert.ok(result.findings.some(item => item.ruleId === "VM004"));
   assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
 });
+
+test("invalid numeric quantities cannot bypass validation", () => {
+  for (const quantity of ["many", NaN, Infinity, -Infinity]) {
+    const result = analyzePayload({ id: 219, quantity });
+    assert.ok(result.findings.some(item => item.ruleId === "VM004"), String(quantity));
+    assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
+  }
+});
