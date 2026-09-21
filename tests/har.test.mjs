@@ -19,3 +19,12 @@ test("HAR JSON body findings keep request metadata and evidence", () => {
   assert.equal(request.analysis.source, "har");
   assert.equal(request.analysis.findings.find(item => item.ruleId === "VM002").expected, 49.5);
 });
+
+test("HAR query parameters expose price tampering", () => {
+  const result = scanRequest({ method: "GET", queryString: [
+    { name: "id", value: "410" }, { name: "valor", value: "0.05" }
+  ] });
+  assert.equal(result.suspiciousRequests, 1);
+  assert.equal(result.requests[0].location, "query");
+  assert.ok(result.requests[0].analysis.findings.some(item => item.ruleId === "VM002"));
+});
