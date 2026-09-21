@@ -34,3 +34,9 @@ test("decimal comma input retains its evidence and triggers tampering rules", ()
   assert.equal(result.findings.find(item => item.ruleId === "VM002").observed, 0.05);
   assert.ok(result.findings.some(item => item.ruleId === "VM007"));
 });
+
+test("zero quantity is not a safe checkout contract", () => {
+  const result = analyzePayload({ id: 219, quantity: 0 });
+  assert.equal(result.findings.find(item => item.ruleId === "VM004").observed, 0);
+  assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
+});
