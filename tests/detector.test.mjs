@@ -40,3 +40,11 @@ test("zero quantity is not a safe checkout contract", () => {
   assert.equal(result.findings.find(item => item.ruleId === "VM004").observed, 0);
   assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
 });
+
+test("negative quantities retain the offending nested field", () => {
+  const result = analyzePayload({ order: { id: 219, quantidade: -1 } });
+  const finding = result.findings.find(item => item.ruleId === "VM004");
+  assert.ok(finding);
+  assert.equal(finding.path, "order.quantidade");
+  assert.equal(finding.observed, -1);
+});
