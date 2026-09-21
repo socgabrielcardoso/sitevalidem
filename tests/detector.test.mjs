@@ -89,3 +89,11 @@ test("missing and empty identifiers cannot appear as safe contracts", () => {
     assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
   }
 });
+
+test("case-insensitive SKUs and numeric quantity strings stay valid", () => {
+  const result = analyzePayload({ sku: "  event-410  ", quantity: "2" });
+  assert.equal(result.catalogItem.id, 410);
+  assert.equal(result.quantity, 2);
+  assert.deepEqual(result.findings.map(item => item.ruleId), ["VM100"]);
+  assert.equal(result.risk.score, 0);
+});
