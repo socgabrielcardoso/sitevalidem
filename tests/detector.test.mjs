@@ -60,3 +60,9 @@ test("the upper quantity limit remains a valid minimal contract", () => {
   assert.deepEqual(result.findings.map(item => item.ruleId), ["VM100"]);
   assert.equal(result.risk.score, 0);
 });
+
+test("one above the quantity limit is flagged", () => {
+  const result = analyzePayload({ id: 219, quantity: 21 });
+  assert.ok(result.findings.some(item => item.ruleId === "VM004"));
+  assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
+});
