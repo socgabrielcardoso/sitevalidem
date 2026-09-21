@@ -58,3 +58,9 @@ test("minimal body and query contracts do not create suspicious HAR findings", (
   assert.equal(result.high, 0);
   assert.deepEqual(result.requests, []);
 });
+
+test("invalid HAR envelopes fail explicitly instead of returning a clean report", () => {
+  for (const har of [null, {}, { log: {} }, { log: { entries: {} } }]) {
+    assert.throws(() => scanHar(har), /Formato HAR inválido/);
+  }
+});
