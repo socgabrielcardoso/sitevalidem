@@ -123,3 +123,10 @@ test("spaced and hyphenated money keys still expose tampering", () => {
   assert.equal(finding.path, " Unit-Price ");
   assert.equal(finding.expected, 79.9);
 });
+
+test("non-price monetary fields remain untrusted checkout inputs", () => {
+  const result = analyzePayload({ id: 219, discount: 5, tax: 12, shipping: 10 });
+  assert.deepEqual(result.findings.filter(item => item.ruleId === "VM001").map(item => item.path).sort(),
+    ["discount", "shipping", "tax"]);
+  assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
+});
