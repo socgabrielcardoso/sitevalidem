@@ -115,3 +115,11 @@ test("nested payment status preserves its path even when pending", () => {
   assert.equal(finding.path, "checkout.payment_status");
   assert.equal(finding.observed, "pending");
 });
+
+test("spaced and hyphenated money keys still expose tampering", () => {
+  const result = analyzePayload({ id: 219, " Unit-Price ": 0.05 });
+  const finding = result.findings.find(item => item.ruleId === "VM002");
+  assert.ok(finding);
+  assert.equal(finding.path, " Unit-Price ");
+  assert.equal(finding.expected, 79.9);
+});
