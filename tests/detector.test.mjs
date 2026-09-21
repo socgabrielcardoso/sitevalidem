@@ -19,3 +19,11 @@ test("zero and sub-ten-cent amounts are flagged at the boundary", () => {
     assert.ok(result.findings.some(item => item.ruleId === "VM002"));
   }
 });
+
+test("a matching client price is untrusted without a false mismatch", () => {
+  const result = analyzePayload({ id: 219, quantity: 1, price: 79.9 });
+  assert.ok(result.findings.some(item => item.ruleId === "VM001"));
+  assert.ok(result.findings.every(item => item.ruleId !== "VM002"));
+  assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
+  assert.ok(result.risk.score > 0);
+});
