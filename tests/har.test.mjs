@@ -46,3 +46,15 @@ test("URL-encoded body values are decoded before price analysis", () => {
   assert.equal(result.requests[0].payload.valor, "0,05");
   assert.ok(result.requests[0].analysis.findings.some(item => item.ruleId === "VM002"));
 });
+
+test("minimal body and query contracts do not create suspicious HAR findings", () => {
+  const result = scanRequest({
+    postData: { text: JSON.stringify({ id: 219, quantity: 2 }) },
+    queryString: [{ name: "id", value: "410" }, { name: "quantity", value: "1" }]
+  });
+  assert.equal(result.totalEntries, 1);
+  assert.equal(result.suspiciousRequests, 0);
+  assert.equal(result.critical, 0);
+  assert.equal(result.high, 0);
+  assert.deepEqual(result.requests, []);
+});
