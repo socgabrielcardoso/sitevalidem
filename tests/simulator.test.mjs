@@ -8,3 +8,10 @@ test("the protected simulation recalculates a nested multi-ticket order", () => 
   assert.equal(result.protected.accepted, true);
   assert.equal(result.protected.total, 259.8);
 });
+
+test("a client price cannot make an unknown item valid in the protected simulation", () => {
+  const result = simulateBackends({ id: 999, quantity: 1, price: 0.05 });
+  assert.equal(result.vulnerable.accepted, true);
+  assert.equal(result.protected.accepted, false);
+  assert.equal(result.protected.total, null);
+});
