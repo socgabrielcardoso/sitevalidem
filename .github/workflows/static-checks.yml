@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: 22
       - name: Check JavaScript syntax
+        shell: bash
         run: find assets tests ci \( -name '*.js' -o -name '*.mjs' \) -print0 | xargs -0 -n1 node --check
       - name: Run core self test
         run: node ci/selftest.mjs
