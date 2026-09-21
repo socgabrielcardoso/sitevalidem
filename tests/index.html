@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ValideM Browser Tests</title>
+  <style>
+    body { margin: 2rem; background: #07110f; color: #e8f5ef; font: 16px system-ui; }
+    main { max-width: 900px; margin: auto; }
+    li { margin: .6rem 0; padding: .7rem; border: 1px solid #234437; border-radius: 9px; }
+    .pass { color: #50f2a4; } .fail { color: #ff6577; }
+    code { color: #a9cabb; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ValideM Browser Tests</h1>
+    <p>Abra esta página pelo Live Server. Os testes são executados no navegador.</p>
+    <ol id="results"></ol>
+  </main>
+  <script type="module" src="tests.js"></script>
+</body>
+</html>
