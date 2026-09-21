@@ -97,3 +97,13 @@ test("case-insensitive SKUs and numeric quantity strings stay valid", () => {
   assert.deepEqual(result.findings.map(item => item.ruleId), ["VM100"]);
   assert.equal(result.risk.score, 0);
 });
+
+test("both true and false payment flags cross the trust boundary", () => {
+  for (const paid of [true, false]) {
+    const result = analyzePayload({ id: 410, quantity: 1, paid });
+    const finding = result.findings.find(item => item.ruleId === "VM003");
+    assert.ok(finding);
+    assert.equal(finding.observed, paid);
+    assert.equal(finding.severity, "critical");
+  }
+});
