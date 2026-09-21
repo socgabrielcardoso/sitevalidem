@@ -74,3 +74,10 @@ test("invalid numeric quantities cannot bypass validation", () => {
     assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
   }
 });
+
+test("an unknown identifier is recorded as an unknown catalog item", () => {
+  const result = analyzePayload({ sku: "EVENT-999", quantity: 1 });
+  assert.equal(result.findings.find(item => item.ruleId === "VM005").observed, "EVENT-999");
+  assert.equal(result.catalogItem, null);
+  assert.ok(result.findings.every(item => !["VM006", "VM100"].includes(item.ruleId)));
+});
