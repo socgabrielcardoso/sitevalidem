@@ -73,3 +73,18 @@ test("empty entries and requests without payloads are counted without findings",
   assert.equal(result.suspiciousRequests, 0);
   assert.deepEqual(result.requests, []);
 });
+
+test("body and query evidence remain distinguishable in the same HAR entry", () => {
+  const result = scanRequest({
+    postData: { text: JSON.stringify({ id: 219, valor: 0.05 }) },
+    queryString: [{ name: "id", value: "410" }, { name: "paid", value: "true" }]
+  });
+  assert.equal(result.totalEntries, 1);
+  assert.equal(result.requests.length, 2);
+  const body = result.requests.find(item => item.location === "body");
+  const query = result.requests.find(item => item.location === "query");
+  assert.ok(body.analysis.findings.some(item => item.ruleId === "VM002"));
+  assert.ok(query.analysis.findings.some(item => item.ruleId === "VM003"));
+  assert.equal(body.analysis.catalogItem.id, 219);
+  assert.equal(query.analysis.catalogItem.id, 410);
+});
