@@ -107,3 +107,11 @@ test("both true and false payment flags cross the trust boundary", () => {
     assert.equal(finding.severity, "critical");
   }
 });
+
+test("nested payment status preserves its path even when pending", () => {
+  const result = analyzePayload({ id: 410, checkout: { payment_status: "pending" } });
+  const finding = result.findings.find(item => item.ruleId === "VM003");
+  assert.ok(finding);
+  assert.equal(finding.path, "checkout.payment_status");
+  assert.equal(finding.observed, "pending");
+});
