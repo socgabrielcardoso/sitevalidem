@@ -21,3 +21,5 @@ jobs:
         run: find assets tests ci \( -name '*.js' -o -name '*.mjs' \) -print0 | xargs -0 -n1 node --check
       - name: Run core self test
         run: node ci/selftest.mjs
+      - name: Run core regression tests
+        run: node --test tests/*.test.mjs
