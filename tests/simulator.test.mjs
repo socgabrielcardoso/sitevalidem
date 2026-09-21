@@ -15,3 +15,10 @@ test("a client price cannot make an unknown item valid in the protected simulati
   assert.equal(result.protected.accepted, false);
   assert.equal(result.protected.total, null);
 });
+
+test("valid quantities use the catalog total when no client price is supplied", () => {
+  const result = simulateBackends({ id: 735, quantity: 3 });
+  assert.equal(result.protected.accepted, true);
+  assert.equal(result.protected.total, 148.5);
+  assert.equal(result.vulnerable.total, 148.5);
+});
