@@ -54,3 +54,9 @@ test("fractional quantities cannot receive the safe contract finding", () => {
   assert.ok(result.findings.some(item => item.ruleId === "VM004"));
   assert.ok(result.findings.every(item => item.ruleId !== "VM100"));
 });
+
+test("the upper quantity limit remains a valid minimal contract", () => {
+  const result = analyzePayload({ id: 219, quantity: 20 });
+  assert.deepEqual(result.findings.map(item => item.ruleId), ["VM100"]);
+  assert.equal(result.risk.score, 0);
+});
