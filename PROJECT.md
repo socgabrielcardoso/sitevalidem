@@ -1,17 +1,21 @@
-# Project Profile
+# ValideM — notas do projeto
 
-**ValideM** is an application-security laboratory focused on detecting client-controlled price manipulation and unsafe trust in payment or pricing data.
+## Problema estudado
 
-## What this project demonstrates
-- Business-logic vulnerability analysis
-- Client/server trust-boundary reasoning
-- HAR and JSON request inspection
-- Evidence-oriented AppSec reporting
-- Safe synthetic scenarios for security training
+Aplicações podem confiar demais em valores enviados pelo navegador. Quando preço, desconto, propriedade ou permissão chegam do cliente sem nova validação no backend, surgem falhas de lógica de negócio.
 
-## Portfolio signal
-The project demonstrates AppSec thinking beyond traditional injection flaws by focusing on business logic, authoritative data sources and backend validation.
+## O que o projeto testa
 
-**Domain:** AppSec, Business Logic Security, API Security  
-**Execution model:** Local browser-based analysis lab  
-**Status:** Active technical portfolio project
+- alteração de campos em requisições;
+- preço e desconto;
+- propriedade de objetos;
+- mass assignment;
+- validação server-side;
+- replay;
+- concorrência;
+- análise de HAR;
+- evidência para reteste.
+
+## Regra central
+
+A interface não é uma fronteira de segurança. Valores críticos precisam ser calculados ou confirmados por uma fonte confiável no servidor.
