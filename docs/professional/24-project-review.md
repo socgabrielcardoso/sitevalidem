@@ -1,15 +1,15 @@
-# Project Review
+# Revisão antes de publicar
 
-Before publication:
-- synthetic data only;
-- no live targets;
-- no secrets;
-- safe HAR examples;
-- clear educational scope;
-- remediation included;
-- trust boundaries documented;
-- negative tests present;
-- terminology reviewed;
-- examples reproduce locally.
+Checar:
 
-This keeps ValideM professional and defensible as an AppSec portfolio project.
+- dados de teste continuam fictícios;
+- nenhum HAR contém cookie ou token real;
+- não existe alvo externo nos exemplos;
+- o cenário ainda reproduz localmente;
+- a correção está descrita;
+- existe caso negativo quando necessário;
+- trust boundary continua claro;
+- testes relevantes passam;
+- README continua coerente com o projeto.
+
+Se o exercício precisa de dado real para funcionar, ele não deve ser público.
